@@ -34,6 +34,12 @@
 #include"../../../include/System.h"
 #include"../include/ImuTypes.h"
 
+//INCLUDE
+#include <Eigen/Core>
+#include <opencv2/core/eigen.hpp>
+#include "opencv2/imgcodecs/legacy/constants_c.h" 
+
+
 using namespace std;
 
 class ImuGrabber

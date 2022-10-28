@@ -402,7 +402,12 @@ Plane* ViewerAR::DetectPlane(const cv::Mat Tcw, const std::vector<MapPoint*> &vM
         {
             if(pMP->Observations()>5)
             {
-                vPoints.push_back(pMP->GetWorldPos());
+                //  FIXED error: conversion from ‘Eigen::Vector3f’ {aka ‘Eigen::Matrix<float, 3, 1>’} to non-scalar type ‘cv::Mat’ requested
+                // vPoints.push_back(pMP->GetWorldPos());
+                cv::Mat worldPos;
+                cv::eigen2cv(pMP->GetWorldPos(), worldPos);
+                vPoints.push_back(worldPos);
+                
                 vPointMP.push_back(pMP);
             }
         }
@@ -527,7 +532,11 @@ void Plane::Recompute()
         MapPoint* pMP = mvMPs[i];
         if(!pMP->isBad())
         {
-            cv::Mat Xw = pMP->GetWorldPos();
+            //  FIXED error: conversion from ‘Eigen::Vector3f’ {aka ‘Eigen::Matrix<float, 3, 1>’} to non-scalar type ‘cv::Mat’ requested
+            // cv::Mat Xw = pMP->GetWorldPos();
+            cv::Mat Xw;
+            cv::eigen2cv(pMP->GetWorldPos(), Xw);
+
             o+=Xw;
             A.row(nPoints).colRange(0,3) = Xw.t();
             nPoints++;
